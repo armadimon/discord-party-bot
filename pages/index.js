@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+const React = require('react');
+const { useEffect, useState } = React;
 
-const Dashboard = () => {
+function Dashboard() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -8,7 +9,11 @@ const Dashboard = () => {
     fetch('/api/availability')
       .then(res => res.json())
       .then(json => {
-        setData(json);
+        setData(Array.isArray(json) ? json : []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching data:', err);
         setLoading(false);
       });
   }, []);
@@ -43,7 +48,7 @@ const Dashboard = () => {
       </div>
     </div>
   );
-};
+}
 
 const styles = {
   container: { backgroundColor: '#0f172a', color: 'white', minHeight: '100vh', padding: '2rem', fontFamily: 'sans-serif' },
@@ -59,4 +64,4 @@ const styles = {
   loading: { height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#0f172a', color: 'white' }
 };
 
-export default Dashboard;
+module.exports = Dashboard;

@@ -1,10 +1,9 @@
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { JWT } from 'google-auth-library';
+const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { JWT } = require('google-auth-library');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
     const rawKey = process.env.GOOGLE_PRIVATE_KEY || '';
-    // 정규표현식 리터럴 대신 문자열 처리를 사용하여 빌드 에러 방지
     const privateKey = rawKey.split('\\n').join('\n');
     
     const serviceAccountAuth = new JWT({
@@ -29,4 +28,4 @@ export default async function handler(req, res) {
     console.error('Error fetching data:', error);
     res.status(500).json({ error: '데이터를 가져오는데 실패했습니다.' });
   }
-}
+};
